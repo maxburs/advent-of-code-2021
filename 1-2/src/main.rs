@@ -12,32 +12,20 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 
-// 1602
-
 fn main() {
-    let mut keys = read_lines("./input.txt")
+    let keys = read_lines("./input.txt")
         .unwrap()
         .map(|line| line.unwrap().parse::<i32>().unwrap());
-
-    let mut last = keys.next().unwrap();
+        
+    let win1 = keys.collect::<Vec<i32>>();
+    let win3 = win1.windows(3).map(|item| item.iter().sum::<i32>()).collect::<Vec<i32>>();
+    let win2 = win3.windows(2);
     let mut total = 0;
 
-    println!("{}", last);
-    for item in keys {
-        if item > last {
+    for i in win2 {
+        if i[1] > i[0] {
             total += 1;
         }
-        println!(
-            "{} {} {}",
-            item,
-            if item > last {
-                "increased"
-            } else {
-                "decreased"
-            },
-            total
-        );
-        last = item;
     }
 
     dbg!(total);
